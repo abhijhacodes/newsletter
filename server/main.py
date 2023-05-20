@@ -1,18 +1,14 @@
 from fastapi import FastAPI
 from db import schemas, models, crud
 from db.database import SessionLocal, engine
+from routes import subscriptions, newsletters
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+app.include_router(subscriptions.router)
+app.include_router(newsletters.router)
 
 
 @app.get("/")

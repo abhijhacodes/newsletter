@@ -4,6 +4,14 @@ from . import schemas, models
 import uuid
 
 
+def check_subscription(db: Session, subscription_body: schemas.SubscriberCreate):
+    subscription = db.query(models.Subscriber).filter(
+        models.Subscriber.email == subscription_body.email).first()
+    if subscription:
+        return True
+    return False
+
+
 def create_subscription(db: Session, subscription_body: schemas.SubscriberCreate):
     subscription_id = str(uuid.uuid4())[:8]
     subscribed_at = datetime.datetime.now()
@@ -16,16 +24,22 @@ def create_subscription(db: Session, subscription_body: schemas.SubscriberCreate
     return db_subscription
 
 
-def delete_subscription(db: Session, unsubscription_body: schemas.SubscriberDelete):
+def delete_subscription(db: Session, subscription_id: str):
     subscription = db.query(models.Subscriber).filter(
-        models.Subscriber.subscription_id == unsubscription_body.subscription_id).first()
-    email = subscription.email
+        models.Subscriber.subscription_id == subscription_id).first()
 
     if subscription:
+        email = subscription.email
         db.delete(subscription)
         db.commit()
         return email
+
     return None
+
+
+def get_subscriptions(db: Session):
+    subscriptions = db.query(models.Subscriber).all()
+    return [schemas.SubscriberRead(**subscription.__dict__) for subscription in subscriptions]
 
 
 def create_newsletter(db: Session, newsletter_body: schemas.NewsLetterCreate):

@@ -10,7 +10,7 @@ class SubscriberCreate(SubscriberBase):
     pass
 
 
-class SubscriberDelete():
+class SubscriberRead(SubscriberBase):
     subscription_id: str
 
 
