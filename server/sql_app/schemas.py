@@ -3,12 +3,20 @@ from pydantic import BaseModel
 
 
 class SubscriberBase(BaseModel):
-    subscription_id: str
     email: str
+
+
+class SubscriberCreate(SubscriberBase):
+    pass
+
+
+class SubscriberDelete():
+    subscription_id: str
 
 
 class Subscriber(SubscriberBase):
     id: int
+    subscription_id: str
     subscribed_at: datetime
 
     class Config:
@@ -20,6 +28,10 @@ class NewsLetterBase(BaseModel):
     body: str
     published_by: str
     include_unsubscribe_link: bool = True
+
+
+class NewsLetterCreate(NewsLetterBase):
+    pass
 
 
 class NewsLetter(NewsLetterBase):
