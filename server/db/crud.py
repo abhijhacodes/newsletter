@@ -1,7 +1,8 @@
-import datetime
 from sqlalchemy.orm import Session
-from . import schemas, models
+import datetime
 import uuid
+
+from . import schemas, models
 
 
 def check_subscription(db: Session, subscription_body: schemas.SubscriberCreate):
