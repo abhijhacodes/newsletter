@@ -17,7 +17,7 @@ class SubscriberDelete():
 class Subscriber(SubscriberBase):
     id: int
     subscription_id: str
-    subscribed_at: datetime
+    subscribed_at: datetime.datetime
 
     class Config:
         orm_mode = True
@@ -36,7 +36,7 @@ class NewsLetterCreate(NewsLetterBase):
 
 class NewsLetter(NewsLetterBase):
     id: int
-    published_at: datetime
+    published_at: datetime.datetime
 
     class Config:
         orm_mode = True

@@ -1,5 +1,5 @@
 from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text, func
-from database import Base
+from .database import Base
 
 
 class Subscriber(Base):
