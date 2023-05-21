@@ -5,14 +5,14 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-def add_unsubscription_link(email_body, subscription_id):
+def add_unsubscription_link(email_body: str, subscription_id: str):
     unsubscribe_endpoint = os.environ['UNSUBSCRIBE_URL']
     unsubscribe_url = f'{unsubscribe_endpoint}/{subscription_id}'
 
     return f"{email_body} <br/><br/> <a href='{unsubscribe_url}'>Unsubscribe from this newsletter</a>"
 
 
-def send_email_in_background(email_subject, email_body, email_reciever, allow_unsubscription, subscription_id):
+def send_email_in_background(email_subject: str, email_body: str, email_reciever: str, allow_unsubscription: bool, subscription_id: str):
     email_sender = os.environ['EMAIL_ID']
     email_password = os.environ['EMAIL_PASSWORD']
     smtp_server = os.environ['SMTP_SERVER']

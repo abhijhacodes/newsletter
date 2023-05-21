@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from db import schemas
 from db.database import get_db_connection
 from db.crud.newsletters import create_newsletter, get_newsletters, delete_newsletter_by_id
-from db.crud.subscribers import get_subscriptions
+from db.crud.subscriptions import get_subscriptions
 from utils.email import send_email_in_background
 
 
@@ -19,7 +19,7 @@ router = APIRouter(
 def publish_newsletter(newsletter: schemas.NewsLetterCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db_connection)):
     email_subject = newsletter.title
     email_body = newsletter.body
-    allow_unsubscription = newsletter.include_unsubscribe_link
+    allow_unsubscription = newsletter.include_unsubscribe_link or newsletter.include_unsubscribe_link is None
 
     try:
         db_newsletter = create_newsletter(db, newsletter)
