@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from email_validator import validate_email, EmailNotValidError
+from typing import List
 
 from db import schemas
 from db.database import get_db_connection
@@ -60,7 +61,7 @@ def unsubscribe_from_newsletter(subscription_id: str, db: Session = Depends(get_
                             detail="Newsletter subscription not found")
 
 
-@router.get("/all", response_model=list[schemas.SubscriberRead])
+@router.get("/all", response_model=List[schemas.SubscriberRead])
 def get_all_subscribers(db: Session = Depends(get_db_connection)):
     try:
         subscriptions = get_subscriptions(db)

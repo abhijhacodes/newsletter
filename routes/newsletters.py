@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, BackgroundTasks, HTTPException, status
 from sqlalchemy.orm import Session
-
+from typing import List
 
 from db import schemas
 from db.database import get_db_connection
@@ -38,7 +38,7 @@ def publish_newsletter(newsletter: schemas.NewsLetterCreate, background_tasks: B
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=e.__str__())
 
 
-@router.get("/all", response_model=list[schemas.NewsLetterRead])
+@router.get("/all", response_model=List[schemas.NewsLetterRead])
 def get_all_newsletters(db: Session = Depends(get_db_connection)):
     try:
         newsletters = get_newsletters(db)
