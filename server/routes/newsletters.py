@@ -4,7 +4,8 @@ from sqlalchemy.orm import Session
 
 from db import schemas
 from db.database import get_db_connection
-from db.crud import get_subscriptions, create_newsletter, get_newsletters, delete_newsletter_by_id
+from db.crud.newsletters import create_newsletter, get_newsletters, delete_newsletter_by_id
+from db.crud.subscribers import get_subscriptions
 from utils.email import send_email_in_background
 
 

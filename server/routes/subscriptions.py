@@ -4,7 +4,7 @@ from email_validator import validate_email, EmailNotValidError
 
 from db import schemas
 from db.database import get_db_connection
-from db.crud import create_subscription, delete_subscription, get_subscriptions, check_subscription
+from db.crud.subscriptions import check_subscription, create_subscription, delete_subscription, get_subscriptions
 
 router = APIRouter(
     prefix="/api/subscriptions",
