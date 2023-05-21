@@ -1,5 +1,7 @@
 # common
 .vscode
+.history
+.env
 
 # backend
 fastapi-env
