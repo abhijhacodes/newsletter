@@ -1,5 +1,6 @@
 import datetime
 from pydantic import BaseModel
+from typing import Optional
 
 
 class SubscriberBase(BaseModel):
@@ -27,16 +28,19 @@ class NewsLetterBase(BaseModel):
     title: str
     body: str
     published_by: str
-    include_unsubscribe_link: bool = True
+    include_unsubscribe_link: Optional[bool] = True
 
 
 class NewsLetterCreate(NewsLetterBase):
     pass
 
 
-class NewsLetter(NewsLetterBase):
+class NewsLetterRead(NewsLetterBase):
     id: int
     published_at: datetime.datetime
+
+
+class NewsLetter(NewsLetterRead):
 
     class Config:
         orm_mode = True

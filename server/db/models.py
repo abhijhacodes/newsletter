@@ -20,4 +20,4 @@ class NewsLetter(Base):
     body = Column(Text, nullable=False)
     published_at = Column(DateTime(timezone=True), default=func.now())
     published_by = Column(String)
-    include_unsubscribe_link = Column(Boolean, default=True)
+    include_unsubscribe_link = Column(Boolean, nullable=True, default=True)
