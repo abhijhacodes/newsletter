@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 #### Create database
 
-Create `sqlite.db` file in root of your project if you want to use sqlite database
+Create `sqlite.db` file in root of your project if you want to use sqlite database <br/>
 or update `SQLALCHEMY_DATABASE_URL` in `db/database.py` file to use any other local or remote sql database
 
 #### Run server locally
@@ -41,8 +41,8 @@ or update `SQLALCHEMY_DATABASE_URL` in `db/database.py` file to use any other lo
 uvicorn main:app --reload
 ```
 
---reload flag enables live reload as you save files
-This will run your server on http://localhost:8000
+--reload flag enables live reload as you save files <br/>
+This will run your server on http://localhost:8000 <br/>
 You can change port by running this command 👇
 
 ```bash
