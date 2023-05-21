@@ -33,15 +33,15 @@ def subscribe_to_newsletter(subscriber: schemas.SubscriberCreate, db: Session = 
         else:
             subscription = create_subscription(db, subscriber)
             return {"message": "Subscribed to the newsletter successfully", "subscription_id": subscription.subscription_id}
-    except:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            detail="Something went wrong, please try again.")
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=e.__str__())
 
     if is_already_subscribed:
         return HTTPException(status_code=status.HTTP_409_CONFLICT, detail="You are already subscribed to the newsletter")
 
 
-@router.get("/unsubscribe/{subscription_id}")
+@router.delete("/unsubscribe/{subscription_id}")
 def unsubscribe_from_newsletter(subscription_id: str, db: Session = Depends(get_db_connection)):
     subscription_found = False
 
@@ -50,9 +50,10 @@ def unsubscribe_from_newsletter(subscription_id: str, db: Session = Depends(get_
         if unsubscribed_email:
             subscription_found = True
             return {"message": "Unsubscribed from newsletter successfully", "email": unsubscribed_email}
-    except:
+
+    except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            detail="Something went wrong, please try again.")
+                            detail=e.__str__())
 
     if not subscription_found:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -61,4 +62,9 @@ def unsubscribe_from_newsletter(subscription_id: str, db: Session = Depends(get_
 
 @router.get("/all", response_model=list[schemas.SubscriberRead])
 def get_all_subscribers(db: Session = Depends(get_db_connection)):
-    return get_subscriptions(db)
+    try:
+        subscriptions = get_subscriptions(db)
+        return subscriptions
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=e.__str__())

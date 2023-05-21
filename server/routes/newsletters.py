@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from db import schemas
 from db.database import get_db_connection
-from db.crud import get_subscriptions, create_newsletter
+from db.crud import get_subscriptions, create_newsletter, get_newsletters, delete_newsletter_by_id
 from utils.email import send_email_in_background
 
 
@@ -33,6 +33,34 @@ def publish_newsletter(newsletter: schemas.NewsLetterCreate, background_tasks: B
         return {"message": f"Created your newsletter {email_subject} successfully and sent emails.", "newsletter_id": db_newsletter.id}
 
     except Exception as e:
-        print(e)
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            detail="Something went wrong while sending emails")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=e.__str__())
+
+
+@router.get("/all", response_model=list[schemas.NewsLetterRead])
+def get_all_newsletters(db: Session = Depends(get_db_connection)):
+    try:
+        newsletters = get_newsletters(db)
+        return newsletters
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=e.__str__())
+
+
+@router.delete("/delete/{newsletter_id}")
+def delete_newsletter(newsletter_id: int, db: Session = Depends(get_db_connection)):
+    newsletter_found = False
+
+    try:
+        newsletter_title = delete_newsletter_by_id(db, newsletter_id)
+        if newsletter_title:
+            newsletter_found = True
+            return {"message": f"Newsletter '{newsletter_title}' deleted successfully"}
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=e.__str__())
+
+    if not newsletter_found:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Newsletter not found")
