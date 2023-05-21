@@ -6,6 +6,7 @@ from typing import List
 from db import schemas
 from db.database import get_db_connection
 from db.crud.subscriptions import check_subscription, create_subscription, delete_subscription, get_subscriptions
+from utils.auth import oauth2_scheme, validate_access_token
 
 router = APIRouter(
     prefix="/api/subscriptions",
@@ -62,8 +63,9 @@ def unsubscribe_from_newsletter(subscription_id: str, db: Session = Depends(get_
 
 
 @router.get("/all", response_model=List[schemas.SubscriberRead])
-def get_all_subscribers(db: Session = Depends(get_db_connection)):
+def get_all_subscribers(db: Session = Depends(get_db_connection), token: str = Depends(oauth2_scheme)):
     try:
+        validate_access_token(token)
         subscriptions = get_subscriptions(db)
         return subscriptions
     except Exception as e:

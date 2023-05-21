@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 from db import models
 from db.database import engine
-from routes import subscriptions, newsletters
+from routes import subscriptions, newsletters, auth
 
 # Create tables for all models in database if it doesn't exist
 models.Base.metadata.create_all(bind=engine)
@@ -26,6 +26,7 @@ app.add_middleware(
 )
 
 # Separate routes to handle APIs for each model
+app.include_router(auth.router)
 app.include_router(subscriptions.router)
 app.include_router(newsletters.router)
 

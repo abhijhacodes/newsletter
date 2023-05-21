@@ -7,7 +7,7 @@ from db.database import get_db_connection
 from db.crud.newsletters import create_newsletter, get_newsletters, delete_newsletter_by_id
 from db.crud.subscriptions import get_subscriptions
 from utils.email import send_email_in_background
-
+from utils.auth import oauth2_scheme, validate_access_token
 
 router = APIRouter(
     prefix="/api/newsletters",
@@ -16,12 +16,13 @@ router = APIRouter(
 
 
 @router.post("/publish")
-def publish_newsletter(newsletter: schemas.NewsLetterCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db_connection)):
+def publish_newsletter(newsletter: schemas.NewsLetterCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db_connection), token: str = Depends(oauth2_scheme)):
     email_subject = newsletter.title
     email_body = newsletter.body
     allow_unsubscription = newsletter.include_unsubscribe_link or newsletter.include_unsubscribe_link is None
 
     try:
+        validate_access_token(token)
         db_newsletter = create_newsletter(db, newsletter)
         subscribers = get_subscriptions(db)
 
@@ -39,8 +40,9 @@ def publish_newsletter(newsletter: schemas.NewsLetterCreate, background_tasks: B
 
 
 @router.get("/all", response_model=List[schemas.NewsLetterRead])
-def get_all_newsletters(db: Session = Depends(get_db_connection)):
+def get_all_newsletters(db: Session = Depends(get_db_connection), token: str = Depends(oauth2_scheme)):
     try:
+        validate_access_token(token)
         newsletters = get_newsletters(db)
         return newsletters
     except Exception as e:
@@ -49,10 +51,11 @@ def get_all_newsletters(db: Session = Depends(get_db_connection)):
 
 
 @router.delete("/delete/{newsletter_id}")
-def delete_newsletter(newsletter_id: int, db: Session = Depends(get_db_connection)):
+def delete_newsletter(newsletter_id: int, db: Session = Depends(get_db_connection), token: str = Depends(oauth2_scheme)):
     newsletter_found = False
 
     try:
+        validate_access_token(token)
         newsletter_title = delete_newsletter_by_id(db, newsletter_id)
         if newsletter_title:
             newsletter_found = True
