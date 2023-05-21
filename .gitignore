@@ -1,12 +1,6 @@
-# common
 .vscode
 .history
 .env
-
-# backend
 fastapi-env
 __pycache__
-
-# frontend
-node_modules
-package-lock.json
+sqlite.db
