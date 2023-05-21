@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 from db import models
@@ -14,6 +15,15 @@ app = FastAPI()
 
 # Load environment variables in app globally
 load_dotenv()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Separate routes to handle APIs for each model
 app.include_router(subscriptions.router)
