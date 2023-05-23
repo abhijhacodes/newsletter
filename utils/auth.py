@@ -14,7 +14,7 @@ def check_credentials(username: str, password: str):
     return username == admin_username and password == admin_password
 
 
-def generate_access_token(data: dict, expiration_delta: timedelta = timedelta(minutes=30)):
+def generate_access_token(data: dict, expiration_delta: timedelta = timedelta(minutes=120)):
     secret_key = os.environ['ENCRYPTION_SECRET_KEY']
     algorithm = os.environ['ENCRYPTION_ALGORITHM']
 
