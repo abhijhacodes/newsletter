@@ -32,7 +32,7 @@ def publish_newsletter(newsletter: schemas.NewsLetterCreate, background_tasks: B
             background_tasks.add_task(
                 send_email_in_background, email_subject, email_body, email_reciever, allow_unsubscription, subscription_id)
 
-        return {"message": f"Created your newsletter {email_subject} successfully and sent emails.", "newsletter_id": db_newsletter.id}
+        return {"status_code": status.HTTP_200_OK, "message": f"Created your newsletter '{email_subject}' successfully and sent emails.", "newsletter_id": db_newsletter.id}
 
     except Exception as e:
         raise HTTPException(

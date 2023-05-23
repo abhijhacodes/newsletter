@@ -34,7 +34,7 @@ def subscribe_to_newsletter(subscriber: schemas.SubscriberCreate, db: Session = 
             is_already_subscribed = True
         else:
             subscription = create_subscription(db, subscriber)
-            return {"message": "Subscribed to the newsletter successfully", "subscription_id": subscription.subscription_id}
+            return {"status_code": status.HTTP_200_OK, "message": "Subscribed to the newsletter successfully", "subscription_id": subscription.subscription_id}
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=e.__str__())
@@ -51,7 +51,7 @@ def unsubscribe_from_newsletter(subscription_id: str, db: Session = Depends(get_
         unsubscribed_email = delete_subscription(db, subscription_id)
         if unsubscribed_email:
             subscription_found = True
-            return {"message": "Unsubscribed from newsletter successfully", "email": unsubscribed_email}
+            return {"status_code": status.HTTP_200_OK, "message": "Unsubscribed from newsletter successfully", "email": unsubscribed_email}
 
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
