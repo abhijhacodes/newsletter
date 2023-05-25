@@ -2,6 +2,8 @@
 
 This repository contains code for backend of newsletter project in FastAPI
 
+#### See the code for client side [here](https://github.com/abhijhacodes/newsletter-client)
+
 ### Steps to setup and run locally 👇
 
 #### Create python virtual environment
