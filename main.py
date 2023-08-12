@@ -19,8 +19,8 @@ load_dotenv()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://abhijha-newsletter.netlify.app",
-                   "http://localhost:5173"],
+    allow_origins=["https://abhijha-newsletter.netlify.app", "http://localhost:5173",
+                   "http://127.0.0.1:5500/", "https://shubhamjha.netlify.app/"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
