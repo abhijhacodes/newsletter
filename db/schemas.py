@@ -44,3 +44,10 @@ class NewsLetter(NewsLetterRead):
 
     class Config:
         orm_mode = True
+
+
+class EmailSend(BaseModel):
+    subject: str
+    body: str
+    reciever: str
+    api_key: str

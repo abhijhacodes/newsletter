@@ -12,11 +12,15 @@ def add_unsubscription_link(email_body: str, subscription_id: str):
     return f"{email_body} <br/><br/> <a href='{unsubscribe_url}'>Unsubscribe from this newsletter</a>"
 
 
-def send_email_in_background(email_subject: str, email_body: str, email_reciever: str, allow_unsubscription: bool, subscription_id: str):
+def send_email_in_background(email_subject: str, email_body: str, email_reciever: str, allow_unsubscription: bool, subscription_id: str, sendFromSecondary: bool = False):
     email_sender = os.environ['EMAIL_ID']
     email_password = os.environ['EMAIL_PASSWORD']
     smtp_server = os.environ['SMTP_SERVER']
     smtp_port = os.environ['SMTP_PORT']
+
+    if (sendFromSecondary):
+        email_sender = os.environ['SECONDARY_EMAIL_ID']
+        email_password = os.environ['SECONDARY_EMAIL_PASSWORD']
 
     email = MIMEMultipart("alternative")
     email['From'] = email_sender
